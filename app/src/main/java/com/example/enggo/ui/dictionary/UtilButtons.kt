@@ -18,6 +18,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -28,9 +29,11 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.enggo.R
+import com.example.enggo.model.dictionary.WordModel
+import kotlinx.coroutines.launch
 
 @Composable
-fun UtilButtons() {
+fun UtilButtons(viewModel: WordModelViewModel) {
     val context = LocalContext.current
 //    var clickedState by remember { mutableStateOf(false) }
 //    val ttsListener by remember {
@@ -55,7 +58,10 @@ fun UtilButtons() {
     }
 
     SaveButton() {
-        Log.d("Save", "Nhan save")
+        val wordModel = viewModel.wordState.value.wordModel
+        if (wordModel != null) {
+            viewModel.addBookmark(wordModel)
+        }
     }
 
     ShareButton() {
@@ -71,7 +77,7 @@ fun UtilButtons() {
 @Composable
 fun SaveButton(
     modifier: Modifier = Modifier,
-    onButtonClick: () -> Unit
+    onButtonClick: () -> Unit,
 ) {
     Card(
         elevation = CardDefaults.cardElevation(2.dp),

@@ -12,6 +12,7 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navOptions
 import com.example.enggo.navigation.TopLevelDestination
 import com.example.enggo.ui.course.navigation.navigateToCourses
+import com.example.enggo.ui.dictionary.navigation.navigateToDictionary
 import com.example.enggo.ui.home.navigation.navigateToHome
 import java.time.Instant
 
@@ -72,7 +73,7 @@ class AppState(
 
             when (topLevelDestination) {
                 TopLevelDestination.HOME -> navController.navigateToHome(topLevelNavOptions)
-                TopLevelDestination.DICTIONARY -> TODO()
+                TopLevelDestination.DICTIONARY -> navController.navigateToDictionary(topLevelNavOptions)
                 TopLevelDestination.COURSES -> navController.navigateToCourses(topLevelNavOptions)
                 TopLevelDestination.FOLDER -> TODO()
                 TopLevelDestination.PROFILE -> TODO()

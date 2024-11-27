@@ -3,6 +3,7 @@
 
     <string name="home">Home</string>
     <string name="dictionary">Dictionary</string>
+    <string name="bookmarks">Bookmarks</string>
     <string name="courses">Courses</string>
     <string name="folder_library">Library</string>
     <string name="profile">Profile</string>

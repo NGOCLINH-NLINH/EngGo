@@ -4,6 +4,7 @@ import android.util.Log
 import com.example.enggo.data.repository.UserRepository
 import com.example.enggo.model.ProfileData
 import com.example.enggo.model.UserData
+import com.example.enggo.model.dictionary.WordModel
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.tasks.await
 
@@ -242,5 +243,38 @@ class UserService(private val firestore: FirebaseFirestore): UserRepository {
             Log.e("FIRESTORE ERROR", "Error getting username: ", e)
         }
         return username
+    }
+
+    override suspend fun addBookmark(userId: String, word: WordModel): Boolean {
+        return try {
+            firestore.collection("users").document(userId)
+                .collection("bookmarks").document(word.wordsetId) // wordsetId la key cho document
+                .set(word)
+                .await()
+            Log.d("FIRESTORE", "Adding bookmark successfully: ${word.word}")
+            true
+        } catch (e: Exception) {
+            Log.e("FIRESTORE ERROR", "Error adding bookmark: ", e)
+            false
+        }
+    }
+
+    override suspend fun getBookmarks(userId: String): List<WordModel> {
+        return try {
+            val snapshot = firestore.collection("users")
+                .document(userId)
+                .collection("bookmarks")
+                .get()
+                .await()
+            snapshot.documents.mapNotNull { it.toObject(WordModel::class.java) }
+        } catch (e: Exception) {
+            Log.e("FIRESTORE ERROR", "Error fetching bookmarks: ", e)
+            emptyList()
+        }
+    }
+
+    override suspend fun removeBookmark(userId: String, wordsetId: String) {
+        firestore.collection("users").document(userId)
+            .collection("bookmarks").document(wordsetId).delete().await()
     }
 }
